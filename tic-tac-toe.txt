@@ -1,0 +1,152 @@
+player_1 = None
+player_2 = None
+
+
+def greeting():
+    """
+    Greetings and introductions are made
+
+    This function welcomes players, informs about
+    the game conditions and records the names of players.
+    """
+    print(f'''
+    {"* " * 20}КРЕСТИКИ-НОЛИКИ {"* " * 20}
+    {" " * 36}Добро пожаловать в игру!
+    {"* " * 48} 
+    {" " * 15}Правила: побеждает игрок, первым сложивший линию из своих символов
+    {" " * 28}по горизонтали, вертикали или диагонали.
+    {"* " * 48}
+    ''')
+    global player_1, player_2
+    player_1 = input('Игрок 1, представьтесь:\n')
+    player_2 = input('Игрок 2, представьтесь:\n')
+    print(f'Здравствуйте, {player_1} и {player_2},\nначнем игру:')
+    print()
+
+
+def draw_board(board: list[list[str]]):
+    """
+    Playing field printing
+
+    This function takes a game board, which is a two-dimensional array.
+    And prints it in the given form.
+
+    :param board: a two-dimensional array consisting of 3 lists, each
+    with 3 elements, to be printed as a matrix
+    """
+    print('    ', end='')
+    print(*list(range(3)), sep='  ')
+    for i in range(3):
+        print(i, ' ', *board[i])
+
+
+def take_input(x: str, y: str, board: list[list[str]], token: str) -> list[list[str]]:
+    """
+    Accepting data, checking its correctness and displaying a new playing
+    field, taking into account the changes made
+
+    This function takes a game board, a token, and the coordinates of a cell
+    for that token. The coordinates are checked to see if the input is correct:
+    the number 0, 1, or 2. If there is no other token in the specified cell, a
+    new board is printed.If there is already a token in the specified cell, you
+    are prompted to enter the coordinates of another cell.
+
+    :param x: row number
+    :param y: column number
+    :param board: a two-dimensional array consisting of 3 lists, each
+    with 3 elements, to be printed as a matrix
+    :param token: the 'X' or 'O' sign depends on the current player
+    :return: game board with the current player's token inserted
+    """
+    while True:
+        try:
+            x = int(x)
+            y = int(y)
+            if x not in range(3) or y not in range(3):
+                print("Некорректный ввод. Вы уверены, что ввели число от 0 до 2?")
+                x = input('введите номер строки(0, 1 или 2):\n')
+                y = input('введите номер столбца(0, 1 или 2):\n')
+                continue
+            if board[x][y] not in '_ ':
+                print('Клетка уже занята')
+                x = input('введите номер строки(0, 1 или 2):\n')
+                y = input('введите номер столбца(0, 1 или 2):\n')
+                continue
+            else:
+                board[x][y] = token
+                return board
+        except ValueError:
+            print("Некорректный ввод. Вы уверены, что ввели число от 0 до 2?")
+            x = input('введите номер строки(0, 1 или 2):\n')
+            y = input('введите номер столбца(0, 1 или 2):\n')
+            continue
+
+
+def check_win(board: list[list[str]]) -> bool:
+    """
+    Determines the winning situation on the field
+
+    This function сhecks for rows, columns or diagonals that are
+    completely filled with identical tokens
+
+    :param board: a two-dimensional array consisting of 3 lists,
+    each with 3 elements, to be printed as a matrix
+    :return: True if it finds a winning situation on the field,
+    False otherwise.
+    """
+    for row in board:
+        if all(cell == row[0] and cell != '_ ' for cell in row):
+            return True
+    for col in range(3):
+        if all(board[row][col] == board[0][col] and board[row][col] != '_ ' for row in range(3)):
+            return True
+    if all(board[i][i] == board[0][0] and board[i][i] != '_ ' for i in range(3)) or \
+       all(board[i][2-i] == board[0][2] and board[i][2-i] != '_ ' for i in range(3)):
+        return True
+
+    return False
+
+
+def main():
+    """
+    Basic gameplay
+
+    In this function, the initial game board is generated,
+    the current player is determined, who enters the coordinates
+    of the cell to place the token. Also, previously created functions
+    are launched in the order required for the game. Information about
+    the game result is displayed and the game will be repeated or finished.
+    """
+    greeting()
+    board = [['_ ' for _ in range(3)] for _ in range(3)]
+    draw_board(board)
+    print()
+    counter = 0
+    win = False
+    while not win:
+        if counter % 2 == 0:
+            player = player_1
+            token = 'X '
+        else:
+            player = player_2
+            token = 'O '
+        x = input(f'{player} введите номер строки(0, 1 или 2):\n')
+        y = input(f'{player} введите номер столбца(0, 1 или 2):\n')
+        take_input(x, y, board, token)
+        draw_board(board)
+        print()
+        if counter >= 4 and check_win(board):
+            print(f"Победа за {player}!")
+            win = True
+        if counter == 8 and not check_win(board):
+            print('Ничья!')
+            break
+        counter += 1
+    answer = input('Хотите сыграть еще? (да или нет):')
+    if answer.lower() == 'да' or answer.lower() == 'lf':
+        main()
+    else:
+        print('Ждем вас снова!')
+
+
+main()
