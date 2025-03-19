@@ -1,0 +1,34 @@
+import random
+
+
+def is_valid(answer_player: str) -> bool:
+    """
+    Сhecking the correctness of the input.
+
+    This function takes the player's answer and checks the input for correctness.
+
+    :param answer_player: yes or no.
+    :return: True if the answer is valid, False otherwise.
+    """
+    return answer_player.lower() == 'да' or answer_player.lower() == 'нет'
+
+
+answer_magic_ball = [
+    'Бесспорно', 'Предрешено', 'Никаких сомнений', 'Определенно да', 'Можешь быть уверен в этом',
+    'Мне кажется да', 'Вероятнее всего', 'Хорошие перспективы', 'Знаки говорят - да', 'Да',
+    'Пока неясно, попробуй снова', 'Спроси позже', 'Лучше не рассказывать', 'Сейчас нельзя предсказать',
+    'Сконцентрируйся и спроси опять', 'Даже не думай', 'Мой ответ - нет', 'По моим данным - нет',
+    'Перспективы не очень хорошие', 'Весьма сомнительно'
+    ]
+print('Привет, Мир, я магический шар, и я знаю ответ на любой вопрос.')
+print(f"Привет, {input('Как тебя зовут? ')}")
+while True:                         # endless loop
+    input('Задай вопрос: ')
+    print(random.choice(answer_magic_ball))  # random output of the magic ball answer
+    rep = input('Хочешь задать еще вопрос? (да или нет):  ')
+    while not is_valid(rep):        # if the answer is incorrect, asks to enter the correct answer
+        print('Вводите только "да" или "нет"')
+        rep = input('Хочешь задать еще вопрос? (да или нет):  ')
+    if is_valid(rep):               # if the answer is entered correctly
+        if rep.lower() == 'нет':    # if the answer is 'no'
+            break                   # game over
