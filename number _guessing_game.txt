@@ -1,0 +1,30 @@
+import random
+
+
+def is_valid() -> bool:
+    """
+    Checks if the number entered is correct
+
+    This function checks if the attempt is
+    a number in the range from 1 to 99 inclusive.
+
+    :return: True if the attempt is valid, False otherwise.
+    """
+    return (str(attempt)).isdigit() and 1 <= attempt <= 100
+
+
+num = random.randint(1, 100)             # a random number from 1 to 99 inclusive is selected
+print('Добро пожаловать в числовую угадайку')
+while True:                                   # endless loop
+    attempt = int(input('Угадайте число от 1 до 100: '))
+    if not is_valid():                        # if the attempt does not meet the conditions, the cycle is terminated
+        print('А может быть все-таки введем целое число от 1 до 100?')
+        break
+    if attempt > num:
+        print('Ваше число больше загаданного, попробуйте еще разок')
+    elif attempt < num:
+        print('Ваше число меньше загаданного, попробуйте еще разок')
+    else:                                      # If the number is guessed, the cycle is terminated
+        print('Вы угадали, поздравляем!')
+        print('Спасибо, что играли в числовую угадайку. Еще увидимся...')
+        break
