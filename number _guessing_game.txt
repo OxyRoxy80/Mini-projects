@@ -1,7 +1,7 @@
 import random
 
 
-def is_valid(att: -> str) -> bool:
+def is_valid(att: str) -> bool:
     """
     Checks if the number entered is correct
 
@@ -13,18 +13,22 @@ def is_valid(att: -> str) -> bool:
     return (att.isdigit()) and 1 <= int(att) <= 100
 
 
-num = random.randint(1, 100)             # a random number from 1 to 99 inclusive is selected
+# a random number from 1 to 99 inclusive is selected
+num = random.randint(1, 100)
 print('Добро пожаловать в числовую угадайку')
-while True:                                   # endless loop
+# endless loop
+while True:
     attempt = input('Угадайте число от 1 до 100: ')
-    if not is_valid(attempt):                        # if the number does not meet the requirements, the iteration is skipped
+    # if the number does not meet the requirements, the iteration is skipped
+    if not is_valid(attempt):
         print('А может быть все-таки введем целое число от 1 до 100?')
         continue
     if int(attempt) > num:
         print('Ваше число больше загаданного, попробуйте еще разок')
     elif int(attempt) < num:
         print('Ваше число меньше загаданного, попробуйте еще разок')
-    else:                                      # If the number is guessed, the cycle is terminated
+    # If the number is guessed, the cycle is terminated
+    else:
         print('Вы угадали, поздравляем!')
         print('Спасибо, что сыграли в числовую угадайку. Еще увидимся...')
         break

@@ -22,13 +22,19 @@ answer_magic_ball = [
     ]
 print('Привет, Мир, я магический шар, и я знаю ответ на любой вопрос.')
 print(f"Привет, {input('Как тебя зовут? ')}")
-while True:                         # endless loop
+# endless loop
+while True:
     input('Задай вопрос: ')
-    print(random.choice(answer_magic_ball))  # random output of the magic ball answer
+    # random output of the magic ball answer
+    print(random.choice(answer_magic_ball))
     rep = input('Хочешь задать еще вопрос? (да или нет):  ')
-    while not is_valid(rep):        # if the answer is incorrect, asks to enter the correct answer
+    # if the answer is incorrect, asks to enter the correct answer
+    while not is_valid(rep):
         print('Вводите только "да" или "нет"')
         rep = input('Хочешь задать еще вопрос? (да или нет):  ')
-    if is_valid(rep):               # if the answer is entered correctly
-        if rep.lower() == 'нет':    # if the answer is 'no'
-            break                   # game over
+    # if the answer is entered correctly
+    if is_valid(rep):
+        # if the answer is 'no'
+        if rep.lower() == 'нет':
+            # game over
+            break
