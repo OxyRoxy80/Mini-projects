@@ -1,0 +1,128 @@
+
+
+Что вы должны сделать в консоли Django?
+       
+        
+          
+    
+    Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье.
+
+КОМАНДЫ DJANGO SHELL
+
+python manage.py shell
+from news.models import Author, Category, Post, PostCategory, Comment
+from django.contrib.auth.models import User
+
+1.Создание пользователей и авторов
+user1 = User.objects.create_user('Евгений Фурин')
+user2 = User.objects.create_user('Дмитрий Шевченко')
+
+author1 = Author.objects.create(user=user1)
+author2 = Author.objects.create(user=user2)
+
+
+2.Добавление категорий
+category1 = Category.objects.create(name='Литература')
+category2 = Category.objects.create(name='Общество') 
+category3 = Category.objects.create(name='Спорт')
+category4 = Category.objects.create(name='События').
+
+
+3. Добавление статей и новости
+post1 = Post.objects.create(author=author1, post_type='AR', title='Итоги года', content='Главный итог уходящего года - то, что никак
+их итогов подводить не хочется. Не могу сказать, что я доволен собой. Было допущено много ошибок. Было много работы.
+Пчелосезон прошел неплохо, а вот в колледже нагрузили по самое не хочу. Плюс произошло несколько ЧП подряд...С наступающим Новым годом!')
+
+post2 = Post.objects.create(author=author1, post_type='AR', title='Луна и грош', content='Чему служит искусство?
+Какова цель создаваемых шедевров? И есть ли смысл в красоте, которая создается только ради самой красоты?
+На эти вопросы попытался ответить Сомерсет Моэм в романе "Луна и грош"')
+
+post3 = Post.objects.create(author=author2, post_type='NW', title='Дисквалификация Ферстаппена', content='Джордж Расселл считает,
+что если Макс Ферстаппен наберет 12 штрафных баллов и будет дисквалифицирован, то это станет заслуженным результатом его действий
+на трассе')
+
+
+4. Присвоение категорий
+PostCategory.objects.create(post=post1, category=category1)
+PostCategory.objects.create(post=post1, category=category2)
+PostCategory.objects.create(post=post2, category=category1)
+PostCategory.objects.create(post=post3, category=category3)
+PostCategory.objects.create(post=post3, category=category4)
+
+
+5. Создание комментариев
+comment1 = Comment.objects.create(post=post1, user=user2, text='С Новым годом!')
+comment2 = Comment.objects.create(post=post1, user=user2, text='А у меня год был замечательный.
+ Почти все планы выполнены и даже на Формулу-1 удалось попасть!!')
+comment3 = Comment.objects.create(post=post1, user=user1, text='Благодарю за поздравление! Очень рад за вас, так держать!')
+comment4 = Comment.objects.create(post=post2, user=user1, text='Неплохой роман о противоречивости творческой натуры')
+comment5 = Comment.objects.create(post=post2, user=user2, text='Роман хорошо запомнился, но не понравился')
+comment6 = Comment.objects.create(post=post2, user=user1, text='Интересно, до этого слышал только положительные отзывы.
+ Мне он показался легким и даже увлекающим.')
+comment7 = Comment.objects.create(post=post3, user=user1, text='А что он не так сделал?')
+comment8 = Comment.objects.create(post=post3, user=user2, text='намеренно въехал в Расселла')
+comment9 = Comment.objects.create(post=post3, user=user1, text='Ну да, как-то не по-спортивному')
+
+
+6.Корректировка рейтингов
+
+post1.dislike()
+post1.like()
+post1.like()
+
+post2.like()
+post2.like()
+post2.like()
+post2.like()
+post2.like()
+
+post3.like()
+post3.dislike()
+post3.like()
+post3.like()
+post3.dislike()
+
+comment1.like()
+comment1.like()
+comment1.like()
+
+comment2.like()
+
+comment3.like()
+
+comment4.like()
+comment4.dislike()
+comment4.dislike()
+comment4.dislike()
+
+comment5.like()
+comment5.like()
+
+comment6.like()
+comment6.like()
+
+comment9.like()
+comment9.like()
+comment9.like()
+
+
+7.Обновление рейтингов
+author1.update_rating()
+author2.update_rating()
+
+
+8.Вывод лучшего пользователя
+best_author = Author.objects.all().order_by('-rating').first()
+print(f'Лучший пользователь: {best_author.user.username}\nРейтинг: {best_author.rating}')
+
+
+9.Вывод лучшей статьи
+best_post = Post.objects.all().order_by('-rating').first()
+print(f'Дата: {best_post.created_at}\nАвтор: {best_post.author.user.username}\nРейтинг: {best_post.rating}\nЗаголовок: {best_post.title}\nПревью:{best_post.preview()}')
+
+
+10.Вывод всех комментариев к лучшей статье
+comments = Comment.objects.filter(post=best_post)
+for comment in comments:
+    print(f'Дата: {comment.created_at}\nПользователь: {comment.user.username}\nРейтинг: {comment.rating}\nТекст:{comment.text}')
+    print('---')
