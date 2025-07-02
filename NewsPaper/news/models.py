@@ -21,6 +21,9 @@ class Author(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Post(models.Model):
     ARTICLE = 'AR'
@@ -50,6 +53,8 @@ class Post(models.Model):
         text = str(self.content)
         return f'{text[:124]}...' if len(text) > 124 else text
 
+    def __str__(self):
+        return f'{self.title}: {self.content[:20]}...'
 
 class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete = models.CASCADE)

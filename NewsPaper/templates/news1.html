@@ -1,0 +1,16 @@
+{% extends 'flatpages/default.html' %}
+
+{% load censor %}
+
+{% block title %}
+News1
+{% endblock title %}
+
+{% block content %}
+<br>
+<h1><strong>{{ news1.title|censor }}</strong></h1>
+<h3>{{ news1.created_at|date:'d M Y' }}</h3>
+<hr>
+<br>
+{{ news1.content|censor }}
+{% endblock content %}
