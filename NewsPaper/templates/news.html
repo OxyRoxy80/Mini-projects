@@ -9,6 +9,21 @@ News
 
 
 {% block content %}
+    <style>
+    form p {
+        margin-bottom: 15px;
+    }
+
+    form label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    input[type="submit"] {
+        margin-top: 20px;
+    }
+    </style>
     <br>
     <h1><strong>Все новости и статьи</strong></h1>
     <h3>Количество новостей: {{ news|length }}</h3>
