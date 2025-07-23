@@ -19,3 +19,4 @@ def censor(value):
         flags=re.IGNORECASE)
 
     return pattern.sub(replace_match, value)
+

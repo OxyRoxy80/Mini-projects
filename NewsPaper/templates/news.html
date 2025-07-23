@@ -1,6 +1,7 @@
 {% extends 'flatpages/default.html' %}
 
 {% load censor %}
+{% load custom_tags %}
 
 {% block title %}
 News
@@ -13,6 +14,12 @@ News
     <h3>Количество новостей: {{ news|length }}</h3>
     <hr>
     <br>
+    <form action="" metod="get">
+        {{ filterset.form.as_p }}
+        <input type="submit" value="Найти" />
+    </form>
+    <hr>
+
     {% if news %}
         <table>
             <tr>
@@ -31,4 +38,20 @@ News
     {% else %}
         <h2>Новостей нет!</h2>
     {% endif %}
+    {% if page_obj.has_previous %}
+        <a href="?{% url_replace page=1 %}">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+            ...
+            <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+    {% endif %}
+    {{ page_obj.number }}
+    {% if page_obj.has_next %}
+        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number %}
+            ...
+            <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
+    {% endif %}
+
 {% endblock content %}
