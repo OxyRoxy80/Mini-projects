@@ -1,0 +1,106 @@
+{% extends "account/base.html" %}
+
+{% block content %}
+<style>
+    .logout-container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 40px;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+    .logout-container h2 {
+        color: #2d3748;
+        margin-bottom: 25px;
+        font-size: 28px;
+        font-weight: 600;
+}
+
+    .logout-container p {
+        color: #4a5568;
+        font-size: 16px;
+        margin-bottom: 30px;
+        line-height: 1.5;
+}
+
+    .logout-container form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+}
+
+    .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+}
+
+    .btn-danger {
+        background-color: #ef4444;
+        color: white;
+}
+
+    .btn-danger:hover {
+        background-color: #dc2626;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+    .btn-secondary {
+        background-color: #e2e8f0;
+        color: #2d3748;
+}
+
+    .btn-secondary:hover {
+        background-color: #cbd5e0;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(203, 213, 224, 0.2);
+}
+
+    .button-group {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+}
+
+    @media (max-width: 600px) {
+        .logout-container {
+            padding: 30px 20px;
+            margin: 30px 15px;
+    }
+
+        .button-group {
+            flex-direction: column;
+    }
+
+        .btn {
+            width: 100%;
+    }
+}
+</style>
+<div class="logout-container">
+    <h2>Выход из системы</h2>
+
+    <p>Вы уверены, что хотите выйти?</p>
+
+    <form method="post" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+        {% endif %}
+        <button type="submit" class="btn btn-danger">Выйти</button>
+        <a href="/" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+{% endblock %}

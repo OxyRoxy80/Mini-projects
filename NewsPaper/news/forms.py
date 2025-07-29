@@ -1,5 +1,6 @@
 from django import forms
 from .models import Post
+from allauth.account.forms import SignupForm
 
 
 class NewsForm(forms.ModelForm):

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.urls import reverse
 
+
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
@@ -16,7 +17,7 @@ class Author(models.Model):
         self.save()
 
     def __str__(self):
-        return f'{self.user.username} {self.user.get_full_name()}'
+        return f'{self.user.get_full_name()}'
 
 
 class Category(models.Model):
@@ -79,5 +80,3 @@ class Comment(models.Model):
     def dislike(self):
         self.rating -= 1
         self.save()
-
-

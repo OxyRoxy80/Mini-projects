@@ -1,0 +1,140 @@
+{% extends 'account/base.html' %}
+
+{% block content %}
+<style>
+    .profile-container {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .profile-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .profile-header {
+        color: #2c3e50;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #f1f1f1;
+        font-weight: 600;
+    }
+
+    .welcome-text {
+        color: #555;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 0.8rem 1.5rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #6e8efb, #a777e3);
+        color: white;
+        box-shadow: 0 4px 15px rgba(103, 132, 253, 0.3);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(103, 132, 253, 0.4);
+        background: linear-gradient(135deg, #5d7df4, #9b6bdf);
+    }
+
+    .btn-logout {
+        background: linear-gradient(135deg, #6e8efb, #a777e3);
+        color: white;
+        box-shadow: 0 4px 15px rgba(103, 132, 253, 0.3);
+    }
+
+    .btn-logout:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(103, 132, 253, 0.4);
+        background: linear-gradient(135deg, #5d7df4, #9b6bdf);
+    }
+
+    .btn-author {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: white;
+            box-shadow: 0 4px 15px rgba(103, 132, 253, 0.3);
+    }
+
+    .btn-author:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(103, 132, 253, 0.4);
+        background: linear-gradient(135deg, #5d7df4, #9b6bdf);
+    }
+
+    @media (max-width: 768px) {
+        .profile-container {
+            margin: 1rem;
+            padding: 1.5rem;
+        }
+
+        .profile-header {
+            font-size: 1.5rem;
+        }
+
+        .btn-group {
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="profile-container">
+    <h1 class="profile-header">Личная страница <br>{{ user.get_full_name|default:user.username }}</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    <p class="welcome-text">
+        {% if is_author %}
+            <strong>Ваш статус:</strong> Автор
+        {% else %}
+            <strong>Ваш статус:</strong> Обычный пользователь
+        {% endif %}
+    </p>
+
+    <div class="btn-group">
+        <a href="{% url 'news_list' %}" class="btn btn-primary">Перейти к списку новостей</a>
+
+        {% if not is_author %}
+            <a href="{% url 'upgrade' %}" class="btn btn-author">Стать автором</a>
+        {% endif %}
+
+        <a href="{% url 'account_logout' %}" class="btn btn-logout">Выйти</a>
+    </div>
+</div>
+{% endblock %}
