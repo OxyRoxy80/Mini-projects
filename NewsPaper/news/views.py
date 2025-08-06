@@ -1,9 +1,11 @@
+from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.views.generic import (
     ListView, DetailView, CreateView, UpdateView, DeleteView,
 )
-from .models import Post
+from .models import Post, Category
 from .filters import NewsFilter
 from .forms import NewsForm
 
@@ -23,6 +25,7 @@ class NewsList(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
+        context['categories'] = Category.objects.all()
         return context
 
 class NewsDetail(DetailView):
@@ -39,6 +42,8 @@ class NewsCreate(PermissionRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         post.post_type = 'NW'
+        post.save()
+        form.save_m2m()
         return super().form_valid(form)
 
 class ArticlesCreate(PermissionRequiredMixin, CreateView):
@@ -50,7 +55,10 @@ class ArticlesCreate(PermissionRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         post.post_type = 'AR'
+        post.save()
+        form.save_m2m()
         return super().form_valid(form)
+
 
 class NewsUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     permission_required = ('news.change_post',)
@@ -63,7 +71,6 @@ class NewsUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
         post = form.save(commit=False)
         post.post_type = 'NW'
         return super().form_valid(form)
-
 
 class ArticlesUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     permission_required = ('news.change_post',)
@@ -88,3 +95,17 @@ class ArticlesDelete(LoginRequiredMixin, DeleteView):
     template_name = 'news_delete.html'
     success_url = reverse_lazy('news_list')
     login_url = reverse_lazy('account_login')
+
+
+@login_required
+def subscribe(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    category.subscribers.add(request.user)
+    return redirect('news_list')
+
+
+@login_required
+def unsubscribe(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    category.subscribers.remove(request.user)
+    return redirect('news_list')

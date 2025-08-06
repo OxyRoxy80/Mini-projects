@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Добро пожаловать, {{ user.get_full_name }}! ✨</h2>
+    <p>Спасибо за регистрацию на {{ current_site.name }}!</p>
+    <p>Нажмите кнопку ниже, чтобы активировать аккаунт:</p>
+    <a href="{{ activate_url }}" style="
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+    ">Подтвердить Email</a>
+    <p>Ссылка действительна 3 дня.</p>
+    <hr>
+    <p>Если это не вы, просто удалите письмо.</p>
+</body>
+</html>

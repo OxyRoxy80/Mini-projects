@@ -1,6 +1,6 @@
 import django_filters
 from django import forms
-from .models import Post, Author
+from .models import Post, Author, Category
 
 
 class NewsFilter(django_filters.FilterSet):
@@ -23,6 +23,13 @@ class NewsFilter(django_filters.FilterSet):
         label='Дата (не ранее)',
         widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
     )
+    categories = django_filters.ModelChoiceFilter(
+        field_name='categories',
+        queryset=Category.objects.all(),
+        label='Категория',
+        empty_label='Все категории',
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
     class Meta:
         model = Post
-        fields = ['title', 'author', 'created_at']
+        fields = ['title', 'author', 'created_at', 'categories',]

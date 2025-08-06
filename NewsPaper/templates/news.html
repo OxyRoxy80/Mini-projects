@@ -7,7 +7,6 @@
 News
 {% endblock title %}
 
-
 {% block content %}
     <style>
     form p {
@@ -23,16 +22,99 @@ News
     input[type="submit"] {
         margin-top: 20px;
     }
+
+    .subscribe-btn {
+        margin: 5px 0;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-weight: bold;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+    }
+
+    .subscribe {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .unsubscribe {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .login-notice {
+        color: #6c757d;
+        font-style: italic;
+        margin: 15px 0;
+    }
+
+    .category-buttons {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        margin-left: 20px;
+        width: 300px;
+    }
+
+    .category-name {
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    .filter-container {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 20px;
+    }
+
+    .filter-form {
+        flex-grow: 1;
+    }
+
+    .category-item {
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
     </style>
     <br>
     <h1><strong>Все новости и статьи</strong></h1>
     <h3>Количество новостей: {{ news|length }}</h3>
     <hr>
     <br>
-    <form action="" metod="get">
-        {{ filterset.form.as_p }}
-        <input type="submit" value="Найти" />
-    </form>
+
+    <div class="filter-container">
+        <div class="filter-form">
+            <form action="" method="get">
+                {{ filterset.form.as_p }}
+                <input type="submit" value="Найти" />
+            </form>
+        </div>
+
+        <div class="category-buttons">
+            <h4 style="margin-top: 0;">Управление подписками</h4>
+
+            {% if user.is_authenticated %}
+                {% for category in categories %}
+                    <div class="category-item">
+                        <span class="category-name">{{ category.name }}</span>
+                        {% if user in category.subscribers.all %}
+                            <a href="{% url 'unsubscribe' category.id %}" class="subscribe-btn unsubscribe">Отписаться</a>
+                        {% else %}
+                            <a href="{% url 'subscribe' category.id %}" class="subscribe-btn subscribe">Подписаться</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="login-notice">
+                    <a href="{% url 'account_login' %}">Войдите</a> или <a href="{% url 'account_signup' %}">зарегистрируйтесь</a> для управления подписками.
+                </p>
+            {% endif %}
+        </div>
+    </div>
+
     <hr>
 
     {% if news %}
@@ -53,6 +135,7 @@ News
     {% else %}
         <h2>Новостей нет!</h2>
     {% endif %}
+
     {% if page_obj.has_previous %}
         <a href="?{% url_replace page=1 %}">1</a>
         {% if page_obj.previous_page_number != 1 %}
