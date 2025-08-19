@@ -1,8 +1,6 @@
 from django import forms
 from .models import Post
 from allauth.account.forms import SignupForm
-from django.core.exceptions import ValidationError
-from django.utils import timezone
 
 
 class NewsForm(forms.ModelForm):

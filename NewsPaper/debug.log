@@ -1,0 +1,83 @@
+Watching for file changes with StatReloader
+Not Found: /
+"GET / HTTP/1.1" 404 2761
+"GET /news/news/create/ HTTP/1.1" 200 4588
+Сигнал post_save вызван для поста 45, created=True
+Новый пост создан: 1223
+Сигнал post_save вызван для поста 45, created=False
+"POST /news/news/create/ HTTP/1.1" 302 0
+"GET /news/45 HTTP/1.1" 200 2437
+C:\Users\Home\PythonProjects\ProdjectNews\NewsPaper\news\signals.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\Home\PythonProjects\ProdjectNews\NewsPaper\news\signals.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\Home\PythonProjects\ProdjectNews\NewsPaper\news\signals.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\Home\PythonProjects\ProdjectNews\NewsPaper\news\signals.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\Home\PythonProjects\ProdjectNews\NewsPaper\news\signals.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /
+"GET / HTTP/1.1" 404 2761
+"GET /news/news/create/ HTTP/1.1" 200 4588
+Internal Server Error: /news/news/create/
+Traceback (most recent call last):
+  File "C:\Users\Home\PythonProjects\ProdjectNews\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Home\PythonProjects\ProdjectNews\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Home\PythonProjects\ProdjectNews\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Home\PythonProjects\ProdjectNews\venv\Lib\site-packages\django\contrib\auth\mixins.py", line 109, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Home\PythonProjects\ProdjectNews\venv\Lib\site-packages\django\views\generic\base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Home\PythonProjects\ProdjectNews\venv\Lib\site-packages\django\views\generic\edit.py", line 182, in post
+    return super().post(request, *args, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Home\PythonProjects\ProdjectNews\venv\Lib\site-packages\django\views\generic\edit.py", line 151, in post
+    return self.form_valid(form)
+           ~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Home\PythonProjects\ProdjectNews\NewsPaper\news\views.py", line 45, in form_valid
+    post.save()
+    ~~~~~~~~~^^
+  File "C:\Users\Home\PythonProjects\ProdjectNews\venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Home\PythonProjects\ProdjectNews\venv\Lib\site-packages\django\db\models\base.py", line 988, in save_base
+    pre_save.send(
+    ~~~~~~~~~~~~~^
+        sender=origin,
+        ^^^^^^^^^^^^^^
+    ...<3 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Home\PythonProjects\ProdjectNews\venv\Lib\site-packages\django\dispatch\dispatcher.py", line 189, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "C:\Users\Home\PythonProjects\ProdjectNews\NewsPaper\news\signals.py", line 22, in check_post_limit
+    raise ValidationError("Вы не можете публиковать более 3 новостей/статей в сутки.")
+django.core.exceptions.ValidationError: ['Вы не можете публиковать более 3 новостей/статей в сутки.']
+"POST /news/news/create/ HTTP/1.1" 500 112693
+Watching for file changes with StatReloader
+Not Found: /
+"GET / HTTP/1.1" 404 2761
+"GET /news/news/create/ HTTP/1.1" 200 4588
+Сигнал post_save вызван для поста 46, created=True
+Новый пост создан: dsgsdg
+Сигнал post_save вызван для поста 46, created=False
+"POST /news/news/create/ HTTP/1.1" 302 0
+"GET /news/46 HTTP/1.1" 200 2444
+C:\Users\Home\PythonProjects\ProdjectNews\NewsPaper\news\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\Home\PythonProjects\ProdjectNews\NewsPaper\NewsPaper\settings.py changed, reloading.
