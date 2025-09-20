@@ -8,6 +8,7 @@ from django.views.generic import (
 from .models import Post, Category
 from .filters import NewsFilter
 from .forms import NewsForm
+from django.core.cache import cache
 
 
 class NewsList(ListView):
@@ -32,6 +33,14 @@ class NewsDetail(DetailView):
     model = Post
     template_name = 'news1.html'
     context_object_name = 'news1'
+
+    def get_object(self, *args, **kwargs):
+        obj = cache.get(f'post-{self.kwargs["pk"]}', None)
+        if not obj:
+            obj = super().get_object(*args, **kwargs)
+            cache.set(f'post-{self.kwargs["pk"]}', obj)
+
+        return obj
 
 class NewsCreate(PermissionRequiredMixin, CreateView):
     permission_required = ('news.add_post',)

@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+import logging
 
 from django.conf.global_settings import LOGOUT_REDIRECT_URL, DEFAULT_FROM_EMAIL
 
@@ -184,3 +185,125 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'cache_files'),
+    }
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console_debug': {
+            'format': '%(asctime)s %(levelname)s %(message)s'
+        },
+        'console_warning': {
+            'format': '%(asctime)s %(levelname)s %(pathname)s %(message)s'
+        },
+        'console_error': {
+            'format': '%(asctime)s %(levelname)s %(pathname)s %(message)s',
+        },
+        'general_file': {
+            'format': '%(asctime)s %(levelname)s %(module)s %(message)s'
+        },
+        'error_file': {
+            'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s'
+        },
+        'security_file': {
+            'format': '%(asctime)s %(levelname)s %(module)s %(message)s'
+        },
+        'email_file': {
+            'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s'
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
+'handlers': {
+    'console_debug': {
+        'level': 'DEBUG',
+        'filters': ['require_debug_true'],
+        'class': 'logging.StreamHandler',
+        'formatter': 'console_debug'
+    },
+    'console_warning': {
+        'level': 'WARNING',
+        'filters': ['require_debug_true'],
+        'class': 'logging.StreamHandler',
+        'formatter': 'console_warning'
+    },
+    'console_error': {
+        'level': 'ERROR',
+        'filters': ['require_debug_true'],
+        'class': 'logging.StreamHandler',
+        'formatter': 'console_error'
+    },
+        'general_file': {
+            'level': 'INFO',
+            'filters': ['require_debug_false'],
+            'class': 'logging.FileHandler',
+            'filename': 'general.log',
+            'formatter': 'general_file'
+        },
+        'error_file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'errors.log',
+            'formatter': 'error_file'
+        },
+        'security_file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'security.log',
+            'formatter': 'security_file'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'email_file',
+            'include_html': False,
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console_debug', 'console_warning', 'console_error', 'general_file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['error_file', 'mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ['error_file', 'mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.template': {
+            'handlers': ['error_file'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['error_file'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.security': {
+            'handlers': ['security_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    }
+}

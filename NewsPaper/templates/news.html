@@ -2,12 +2,14 @@
 
 {% load censor %}
 {% load custom_tags %}
+{% load cache %}
 
 {% block title %}
 News
 {% endblock title %}
 
 {% block content %}
+    {% cache 3600 navigation_styles %}
     <style>
     form p {
         margin-bottom: 15px;
@@ -79,12 +81,15 @@ News
         justify-content: space-between;
     }
     </style>
+    {% endcache %}
+
     <br>
     <h1><strong>Все новости и статьи</strong></h1>
     <h3>Количество новостей: {{ news|length }}</h3>
     <hr>
     <br>
 
+    {% cache 3600 sidebar_navigation request.user.username %}
     <div class="filter-container">
         <div class="filter-form">
             <form action="" method="get">
@@ -113,6 +118,7 @@ News
                 </p>
             {% endif %}
         </div>
+        {% endcache %}
     </div>
 
     <hr>
@@ -136,6 +142,7 @@ News
         <h2>Новостей нет!</h2>
     {% endif %}
 
+    {% cache 3600 pagination page_obj.number %}
     {% if page_obj.has_previous %}
         <a href="?{% url_replace page=1 %}">1</a>
         {% if page_obj.previous_page_number != 1 %}
@@ -151,5 +158,6 @@ News
             <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
         {% endif %}
     {% endif %}
+    {% endcache %}
 
 {% endblock content %}
